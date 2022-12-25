@@ -16,7 +16,9 @@ function CategoryDetail({ route }: { route: any }) {
   const categoryId = route.params?.id
 
   return (
-    <Category categoryId={categoryId} />
+    <ScrollView>
+      <Category categoryId={categoryId} />
+    </ScrollView>
 
   );
 }

@@ -49,6 +49,8 @@ export default ({ values, category,
                     return null;
             }
         }}
+            keyExtractor={(item, index) => 'ItemGenerator' + index.toString()}
+            listKey={'ItemGenerator'}
         />
     );
 }

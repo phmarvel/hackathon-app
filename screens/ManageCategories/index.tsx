@@ -57,7 +57,7 @@ function ManageCategories() {
 
 
       {
-        allowMultiColumns ? <FlatList key={'ManageCategories_Multi'} data={categories ?? []} renderItem={({
+        allowMultiColumns ? <FlatList key={'ManageCategories_Multi'} listKey="ManageCategories_Multi" data={categories ?? []} renderItem={({
           item
         }: { item: any }) => <Category item={item}
           OnCreateCategoryField={OnCreateCategoryField}
@@ -71,8 +71,10 @@ function ManageCategories() {
           />}
           numColumns={2}
           style={{ width: '100%' }}
+          keyExtractor={(item, index) => 'ManageCategories_Multi' + index.toString()}
 
-        /> : <FlatList key={'ManageCategories_Single'} data={categories ?? []} renderItem={({
+
+        /> : <FlatList key={'ManageCategories_Single'} listKey="ManageCategories_Single" data={categories ?? []} renderItem={({
           item
         }: { item: any }) => <Category item={item}
           OnCreateCategoryField={OnCreateCategoryField}
@@ -85,6 +87,7 @@ function ManageCategories() {
           key={'category' + item.id}
           />}
           style={{ width: '100%' }}
+          keyExtractor={(item, index) => 'ManageCategories_Single' + index.toString()}
 
         />
       }

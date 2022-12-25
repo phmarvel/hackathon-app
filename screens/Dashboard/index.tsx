@@ -14,9 +14,12 @@ function ManageCategories() {
 
 
   return (
-    <FlatList data={categories ?? []} renderItem={({
+    <FlatList key="DashboardList" listKey="DashboardList" data={categories ?? []} renderItem={({
       item
     }: { item: any }) => <Category key={'category' + item.id} categoryId={item.id} />}
+      keyExtractor={(item, index) => 'category' + index.toString()}
+
+
     />
 
   );

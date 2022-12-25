@@ -8,6 +8,8 @@ import {
     FlatList,
     HStack,
     Button,
+    View,
+    Box,
 
 } from 'native-base';
 import { Dimensions } from 'react-native';
@@ -21,7 +23,6 @@ function Category({ categoryId }: { categoryId: any }) {
     const dispatch = useDispatch()
     const categories = useSelector(getCategories);
     const items = useSelector(getItems);
-    const allowMultiColumns = Dimensions.get('screen').width > 500
 
     const category = categories.find((s: any) => s.id == categoryId)
     const categoryItems = items.filter((s: any) => s.categoryId == categoryId)
@@ -34,10 +35,10 @@ function Category({ categoryId }: { categoryId: any }) {
     }
 
     return (
-        <Center flex={1} >
+        <Box flex={1} >
 
 
-            <HStack m={2} justifyContent="space-between" alignItems={"center"}>
+            <HStack m={2} justifyContent="space-between" alignItems={"center"} >
                 <Text fontWeight="medium" fontSize="20" flex={3}>
                     {category?.name}
                 </Text>
@@ -45,32 +46,13 @@ function Category({ categoryId }: { categoryId: any }) {
                     ADD NEW ITEM
                 </Button>
             </HStack>
-            {
-                allowMultiColumns ? <FlatList key={'CategoryDetail_Multi'} data={categoryItems ?? []} numColumns={2} renderItem={({
-                    item
-                }: { item: any }) => <CategoryItem
-                        key={'item' + item.id}
-                        item={item}
-                        category={category}
-                        OnDeleteItem={OnDeleteItem}
-                    />}
-                    listKey="categories"
-                    style={{ width: '100%' }}
-                /> : <FlatList key={'CategoryDetail_Single'} data={categoryItems ?? []} renderItem={({
-                    item
-                }: { item: any }) => <CategoryItem
-                        key={'item' + item.id}
-                        item={item}
-                        category={category}
-                        OnDeleteItem={OnDeleteItem}
-                    />}
-                    listKey="categories"
-                    style={{ width: '100%' }}
-                />
-            }
-
-
-        </Center>
+            {(categoryItems ?? []).map((item: any) => <CategoryItem
+                key={'item' + item.id}
+                item={item}
+                category={category}
+                OnDeleteItem={OnDeleteItem}
+            />)}
+        </Box>
 
     );
 }
