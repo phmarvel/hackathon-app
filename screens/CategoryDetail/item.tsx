@@ -4,7 +4,8 @@ import {
     Box,
     Text,
     HStack,
-    Button
+    Button,
+    Flex
 
 } from 'native-base';
 import { MaterialIcons } from '@expo/vector-icons'
@@ -49,22 +50,26 @@ export default ({ item, category,
 
 
     return (
-        <Box bg="blueGray.50" p="3" rounded="8" m={'1'} minW={280}>
+        <Box bg="blueGray.50" p="3" rounded="8" m={'1'} minW={280} flex={1} >
 
-            <Text fontWeight="medium" fontSize="16">
-                {renderTitleFieldValue()}
-            </Text>
+            <Flex>
 
-            <ItemGenerator category={category} values={item} />
+                <Text fontWeight="medium" fontSize="16">
+                    {renderTitleFieldValue()}
+                </Text>
+
+                <ItemGenerator category={category} values={item} />
 
 
-            <HStack space={2} mt={3}>
+                <HStack space={2} mt={3}>
 
-                <Button onPress={() => OnDeleteItem(item.id)} size={"md"} variant="outline" borderColor={"white"} leftIcon={<MaterialIcons name="delete" color={colors.primary[700]} size={16} />}>
-                    Remove
-                </Button>
-            </HStack>
+                    <Button onPress={() => OnDeleteItem(item.id)} size={"md"} variant="outline" borderColor={"white"} leftIcon={<MaterialIcons name="delete" color={colors.primary[700]} size={16} />}>
+                        Remove
+                    </Button>
+                </HStack>
 
+            </Flex>
         </Box>
+
     );
 }

@@ -7,6 +7,7 @@ import {
   ScrollView,
   FlatList,
   HStack,
+  Flex,
 
 } from 'native-base';
 import Category from './category';
@@ -18,7 +19,6 @@ import { addCategoryField, deleteCategoryField, putCategoryField } from '../../a
 import { Dimensions } from 'react-native';
 
 function ManageCategories() {
-  const allowMultiColumns = Dimensions.get('screen').width > 650
 
   const categories = useSelector(getCategories);
   const dispatch = useDispatch()
@@ -53,51 +53,32 @@ function ManageCategories() {
     dispatch(deleteCategoryField(categoryId, fieldId))
   }
   return (
-    <Center flex={1} mt={5}>
+    <Flex flex={1} mt={5}>
 
 
-      {
-        allowMultiColumns ? <FlatList key={'ManageCategories_Multi'} listKey="ManageCategories_Multi" data={categories ?? []} renderItem={({
-          item
-        }: { item: any }) => <Category item={item}
-          OnCreateCategoryField={OnCreateCategoryField}
-          OnDeleteCategoryField={OnDeleteCategoryField}
-          OnDeleteCategory={OnDeleteCategory}
-          OnChangeCategoryName={OnChangeCategoryName}
-          OnChangeCategoryFieldName={OnChangeCategoryFieldName}
-          OnChangeCategoryFieldType={OnChangeCategoryFieldType}
-          OnChangeCategoryTitleFieldId={OnChangeCategoryTitleFieldId}
-          key={'category' + item.id}
-          />}
-          numColumns={2}
-          style={{ width: '100%' }}
-          keyExtractor={(item, index) => 'ManageCategories_Multi' + index.toString()}
+      <ScrollView>
+        <Flex direction='row' flexWrap={'wrap'} flex={1} justifyContent="space-around">
+          {(categories ?? []).map((item: any) => <Category item={item}
+            OnCreateCategoryField={OnCreateCategoryField}
+            OnDeleteCategoryField={OnDeleteCategoryField}
+            OnDeleteCategory={OnDeleteCategory}
+            OnChangeCategoryName={OnChangeCategoryName}
+            OnChangeCategoryFieldName={OnChangeCategoryFieldName}
+            OnChangeCategoryFieldType={OnChangeCategoryFieldType}
+            OnChangeCategoryTitleFieldId={OnChangeCategoryTitleFieldId}
+            key={'category' + item.id}
+          />)}
+        </Flex>
 
+      </ScrollView>
 
-        /> : <FlatList key={'ManageCategories_Single'} listKey="ManageCategories_Single" data={categories ?? []} renderItem={({
-          item
-        }: { item: any }) => <Category item={item}
-          OnCreateCategoryField={OnCreateCategoryField}
-          OnDeleteCategoryField={OnDeleteCategoryField}
-          OnDeleteCategory={OnDeleteCategory}
-          OnChangeCategoryName={OnChangeCategoryName}
-          OnChangeCategoryFieldName={OnChangeCategoryFieldName}
-          OnChangeCategoryFieldType={OnChangeCategoryFieldType}
-          OnChangeCategoryTitleFieldId={OnChangeCategoryTitleFieldId}
-          key={'category' + item.id}
-          />}
-          style={{ width: '100%' }}
-          keyExtractor={(item, index) => 'ManageCategories_Single' + index.toString()}
-
-        />
-      }
 
       <HStack m={2}>
         <Button size={"md"} flex={1} variant="solid" onPress={OnCreateCategory}>
           ADD NEW CATEGORY
         </Button>
       </HStack>
-    </Center>
+    </Flex>
 
   );
 }

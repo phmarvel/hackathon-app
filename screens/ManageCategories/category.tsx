@@ -8,7 +8,7 @@ import {
   Heading,
   Spacer,
   HStack,
-  IconButton, Button
+  IconButton, Button, Flex
 
 } from 'native-base';
 import { Box } from 'native-base';
@@ -49,49 +49,50 @@ export default ({ item,
   }
 
   return (
-    <Box bg="blueGray.50" p="3" rounded="8" mb={5} flex={1 / 2} >
+    <Box bg="blueGray.50" p="3" rounded="8" m={'1'} minW={350} flex={1} >
 
-      <Text fontWeight="medium" fontSize="16">
-        {item.name}
-      </Text>
-      <Input label='Category Name' value={item.name} onChangeText={(text) => OnChangeCategoryName(item, text)} />
+      <Flex>
+        <Text fontWeight="medium" fontSize="16">
+          {item.name}
+        </Text>
+        <Input label='Category Name' value={item.name} onChangeText={(text) => OnChangeCategoryName(item, text)} />
 
-      {
-        item.fields?.length > 0 && item.fields.map((field: any) => <CategoryField
-          key={'field' + field.id}
-          item={item} field={field}
-          OnChangeCategoryFieldName={OnChangeCategoryFieldName}
-          OnChangeCategoryFieldType={OnChangeCategoryFieldType}
-          OnDeleteCategoryField={OnDeleteCategoryField} />)
-      }
+        {
+          item.fields?.length > 0 && item.fields.map((field: any) => <CategoryField
+            key={'field' + field.id}
+            item={item} field={field}
+            OnChangeCategoryFieldName={OnChangeCategoryFieldName}
+            OnChangeCategoryFieldType={OnChangeCategoryFieldType}
+            OnDeleteCategoryField={OnDeleteCategoryField} />)
+        }
 
-      <ModalButton
-        mode={'outlined'}
-        visible={showDropDown}
-        showDropDown={() => setShowDropDown(true)}
-        onDismiss={() => setShowDropDown(false)}
-        value={item.titleFieldId}
-        setValue={onSelectValue}
-        customAnchorText={"Title Field: " + (titleField?.id ? (titleField?.name ?? 'UNNAMED FIELD') : 'UNSELECTED FIELD')}
+        <ModalButton
+          mode={'outlined'}
+          visible={showDropDown}
+          showDropDown={() => setShowDropDown(true)}
+          onDismiss={() => setShowDropDown(false)}
+          value={item.titleFieldId}
+          setValue={onSelectValue}
+          customAnchorText={"Title Field: " + (titleField?.id ? (titleField?.name ?? 'UNNAMED FIELD') : 'UNSELECTED FIELD')}
 
-        list={item.fields?.length > 0 ? item.fields.map(((field: any) => {
-          return {
-            label: field.name,
-            value: field.id,
-          }
-        })) : []}
+          list={item.fields?.length > 0 ? item.fields.map(((field: any) => {
+            return {
+              label: field.name,
+              value: field.id,
+            }
+          })) : []}
 
 
-      />
-      <HStack space={2} mt={3} >
-        <Button onPress={() => OnCreateCategoryField(item.id)} size={"md"} variant="outline">
-          ADD NEW FIELD
-        </Button>
-        <Button onPress={() => OnDeleteCategory(item.id)} size={"md"} variant="outline" borderColor={"white"} leftIcon={<MaterialIcons name="delete" color={colors.primary[700]} size={16} />}>
-          Remove
-        </Button>
-      </HStack>
-
+        />
+        <HStack space={2} mt={3} >
+          <Button onPress={() => OnCreateCategoryField(item.id)} size={"md"} variant="outline">
+            ADD NEW FIELD
+          </Button>
+          <Button onPress={() => OnDeleteCategory(item.id)} size={"md"} variant="outline" borderColor={"white"} leftIcon={<MaterialIcons name="delete" color={colors.primary[700]} size={16} />}>
+            Remove
+          </Button>
+        </HStack>
+      </Flex>
     </Box>
   );
 }
