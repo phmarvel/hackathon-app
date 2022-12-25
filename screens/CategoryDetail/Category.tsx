@@ -7,10 +7,10 @@ import {
     ScrollView,
     FlatList,
     HStack,
-    View,
+    Button,
 
 } from 'native-base';
-import { Button } from 'native-base';
+import { Dimensions } from 'react-native';
 import { getCategories } from '../../selectors/categories';
 import { useDispatch, useSelector } from 'react-redux';
 import { getItems } from '../../selectors/items';
@@ -21,6 +21,7 @@ function Category({ categoryId }: { categoryId: any }) {
     const dispatch = useDispatch()
     const categories = useSelector(getCategories);
     const items = useSelector(getItems);
+    const allowMultiColumns = Dimensions.get('screen').width > 500
 
     const category = categories.find((s: any) => s.id == categoryId)
     const categoryItems = items.filter((s: any) => s.categoryId == categoryId)
@@ -44,16 +45,30 @@ function Category({ categoryId }: { categoryId: any }) {
                     ADD NEW ITEM
                 </Button>
             </HStack>
+            {
+                allowMultiColumns ? <FlatList key={'CategoryDetail_Multi'} data={categoryItems ?? []} numColumns={2} renderItem={({
+                    item
+                }: { item: any }) => <CategoryItem
+                        key={'item' + item.id}
+                        item={item}
+                        category={category}
+                        OnDeleteItem={OnDeleteItem}
+                    />}
+                    listKey="categories"
+                    style={{ width: '100%' }}
+                /> : <FlatList key={'CategoryDetail_Single'} data={categoryItems ?? []} renderItem={({
+                    item
+                }: { item: any }) => <CategoryItem
+                        key={'item' + item.id}
+                        item={item}
+                        category={category}
+                        OnDeleteItem={OnDeleteItem}
+                    />}
+                    listKey="categories"
+                    style={{ width: '100%' }}
+                />
+            }
 
-            <FlatList data={categoryItems ?? []} renderItem={({
-                item
-            }: { item: any }) => <CategoryItem
-                    key={'item' + item.id}
-                    item={item}
-                    category={category}
-                    OnDeleteItem={OnDeleteItem}
-                />}
-            />
 
         </Center>
 

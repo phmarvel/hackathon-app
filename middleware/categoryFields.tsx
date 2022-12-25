@@ -16,7 +16,7 @@ const putCategoryFieldFlow = () => ({ dispatch, getState }: { dispatch: any, get
     const newCategoryField = action.payload.field;
     const index = category.fields.findIndex((CategoryField: any) => CategoryField.id == newCategoryField.id);
     if (index > -1) {
-      category.fields[index] = newCategoryField;
+      category.fields[index] = { ...category.fields[index], ...newCategoryField };
       dispatch(putCategory(category));
     }
   }

@@ -124,7 +124,7 @@ const DropDown = forwardRef<TouchableWithoutFeedback, DropDownPropsInterface>(
       [value]
     );
 
-    const setActive = useCallback(
+    const setActive =
       (currentValue: any) => {
         if (multiSelect) {
           const valueIndex = value.indexOf(currentValue);
@@ -139,9 +139,7 @@ const DropDown = forwardRef<TouchableWithoutFeedback, DropDownPropsInterface>(
         } else {
           setValue(currentValue);
         }
-      },
-      [value]
-    );
+      }
 
     return (
       <Menu
@@ -149,7 +147,7 @@ const DropDown = forwardRef<TouchableWithoutFeedback, DropDownPropsInterface>(
         onDismiss={onDismiss}
         theme={theme}
         anchor={
-          <Button ref={ref}
+          <Button
             onPress={showDropDown}
             onLayout={onLayout}
             accessibilityLabel={accessibilityLabel}

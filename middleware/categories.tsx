@@ -33,7 +33,8 @@ const putCategoryFlow = () => ({ dispatch, getState }: { dispatch: any, getState
     }));
     const newCategory = action.payload;
     const index = oldCategoriesClone.findIndex((category: any) => category.id === newCategory.id);
-    oldCategoriesClone[index] = newCategory;
+    oldCategoriesClone[index] = { ...newCategory };
+    oldCategoriesClone[index].fields = [...newCategory.fields]
     dispatch(setCategories(oldCategoriesClone));
   }
 

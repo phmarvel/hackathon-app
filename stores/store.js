@@ -9,7 +9,7 @@ export const configureStore = (services,preloadedState) =>{
 
   let store = configure({
     reducer: reducers,
-    middleware: (getDefaultMiddleware) => [...getDefaultMiddleware(),...middleware.map((f) => f(services)) ,logger ],
+    middleware: (getDefaultMiddleware) => [...middleware.map((f) => f(services)) ,logger ],
     devTools: process.env.NODE_ENV !== 'production',
     preloadedState,
   })
@@ -17,7 +17,6 @@ export const configureStore = (services,preloadedState) =>{
 
 
   store.subscribe(()=>{
-    console.log(JSON.stringify(store.getState()))
     AsyncStorage.setItem('reduxState', JSON.stringify(store.getState()))
 })
 

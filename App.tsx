@@ -29,6 +29,7 @@ import 'intl/locale-data/jsonp/en'; // or any other locale you need
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { RootNavigator } from './navigation/RootNavigator';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as ScreenOrientation from 'expo-screen-orientation';
 
 // Define the config
 const config = {
@@ -46,15 +47,17 @@ declare module "native-base" {
 export default function App() {
 
   const [loadding, setLoadding] = useState(true)
-  const [preloadedState, setPreloadedState] = useState(true)
+  const [preloadedState, setPreloadedState] = useState(undefined)
 
   useEffect(() => {
     (async () => {
+
       let state = await AsyncStorage.getItem('reduxState')
       if (state) {
         setPreloadedState(JSON.parse(state))
       }
       setLoadding(false)
+      await ScreenOrientation.unlockAsync()
 
     })()
   }, [])

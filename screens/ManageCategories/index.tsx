@@ -15,8 +15,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCategories } from '../../selectors/categories';
 import { addCategory, deleteCategory, putCategory } from '../../actions/categories';
 import { addCategoryField, deleteCategoryField, putCategoryField } from '../../actions/categoryFields';
+import { Dimensions } from 'react-native';
 
 function ManageCategories() {
+  const allowMultiColumns = Dimensions.get('screen').width > 650
 
   const categories = useSelector(getCategories);
   const dispatch = useDispatch()
@@ -33,7 +35,8 @@ function ManageCategories() {
     dispatch(putCategory({ ...getCategory(item.id), name: name }))
   }
   const OnChangeCategoryTitleFieldId = (categoryId: any, titleFieldId: string) => {
-    dispatch(putCategory({ ...getCategory(categoryId), titleFieldId: titleFieldId }))
+    let category = getCategory(categoryId);
+    dispatch(putCategory({ ...category, fields: category.fields, titleFieldId: titleFieldId }))
   }
 
 
@@ -50,21 +53,42 @@ function ManageCategories() {
     dispatch(deleteCategoryField(categoryId, fieldId))
   }
   return (
-    <Center flex={1}>
+    <Center flex={1} mt={5}>
 
-      <FlatList data={categories ?? []} renderItem={({
-        item
-      }: { item: any }) => <Category item={item}
-        OnCreateCategoryField={OnCreateCategoryField}
-        OnDeleteCategoryField={OnDeleteCategoryField}
-        OnDeleteCategory={OnDeleteCategory}
-        OnChangeCategoryName={OnChangeCategoryName}
-        OnChangeCategoryFieldName={OnChangeCategoryFieldName}
-        OnChangeCategoryFieldType={OnChangeCategoryFieldType}
-        OnChangeCategoryTitleFieldId={OnChangeCategoryTitleFieldId}
-        key={'category' + item.id}
-        />}
-      />
+
+      {
+        allowMultiColumns ? <FlatList key={'ManageCategories_Multi'} data={categories ?? []} renderItem={({
+          item
+        }: { item: any }) => <Category item={item}
+          OnCreateCategoryField={OnCreateCategoryField}
+          OnDeleteCategoryField={OnDeleteCategoryField}
+          OnDeleteCategory={OnDeleteCategory}
+          OnChangeCategoryName={OnChangeCategoryName}
+          OnChangeCategoryFieldName={OnChangeCategoryFieldName}
+          OnChangeCategoryFieldType={OnChangeCategoryFieldType}
+          OnChangeCategoryTitleFieldId={OnChangeCategoryTitleFieldId}
+          key={'category' + item.id}
+          />}
+          numColumns={2}
+          style={{ width: '100%' }}
+
+        /> : <FlatList key={'ManageCategories_Single'} data={categories ?? []} renderItem={({
+          item
+        }: { item: any }) => <Category item={item}
+          OnCreateCategoryField={OnCreateCategoryField}
+          OnDeleteCategoryField={OnDeleteCategoryField}
+          OnDeleteCategory={OnDeleteCategory}
+          OnChangeCategoryName={OnChangeCategoryName}
+          OnChangeCategoryFieldName={OnChangeCategoryFieldName}
+          OnChangeCategoryFieldType={OnChangeCategoryFieldType}
+          OnChangeCategoryTitleFieldId={OnChangeCategoryTitleFieldId}
+          key={'category' + item.id}
+          />}
+          style={{ width: '100%' }}
+
+        />
+      }
+
       <HStack m={2}>
         <Button size={"md"} flex={1} variant="solid" onPress={OnCreateCategory}>
           ADD NEW CATEGORY
