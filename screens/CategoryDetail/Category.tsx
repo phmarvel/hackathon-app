@@ -34,7 +34,7 @@ function Category({ categoryId }: { categoryId: any }) {
     }
 
     return (
-        <Box >
+        <Box marginY={"5"}>
 
 
             <HStack m={2} justifyContent="space-between" >
@@ -46,6 +46,7 @@ function Category({ categoryId }: { categoryId: any }) {
                 </Button>
             </HStack>
             <Flex direction='row' flexWrap={'wrap'} flex={1} justifyContent="space-around">
+                {categoryItems?.length == 0 && <Text color={"#777"} fontWeight="normal" fontSize="16">No Items</Text>}
                 {(categoryItems ?? []).map((item: any) => <CategoryItem
                     key={'item' + item.id}
                     item={item}

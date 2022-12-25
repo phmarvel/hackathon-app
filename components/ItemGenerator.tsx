@@ -1,7 +1,7 @@
 
 import React from 'react';
 import {
-    FlatList, View
+    FlatList, Flex, View
 
 } from 'native-base';
 import { Box } from 'native-base';
@@ -31,19 +31,28 @@ export default ({ values, category,
     return category?.fields?.length > 0 ? category.fields.map((item: any) => {
 
         let value = values[item.id];
+        let Component = null
         switch (item.type) {
             case 'TEXT':
-                return <Text label={item.name} value={value} onChangeText={(text) => onChangeValue(item.id, text)} />;
+                Component = <Text label={item.name} value={value} onChangeText={(text) => onChangeValue(item.id, text)} />;
+                break;
             case 'NUMBER':
-                return <Number label={item.name} value={value} onChangeText={(text) => onChangeValue(item.id, text)} />;
+                Component = <Number label={item.name} value={value} onChangeText={(text) => onChangeValue(item.id, text)} />;
+                break;
             case 'DATE':
-                return <Date label={item.name} value={value} onChange={(date: any) => onChangeValue(item.id, date)} />;
+                Component = <Date label={item.name} value={value} onChange={(date: any) => onChangeValue(item.id, date)} />;
+                break;
             case 'CHECKBOX':
 
-                return <Checkbox label={item.name} value={value} onChange={(val) => onChangeValue(item.id, val)} />;
+                Component = <Checkbox label={item.name} value={value} onChange={(val) => onChangeValue(item.id, val)} />;
+                break;
 
             default:
                 return null;
         }
+
+        return <Flex marginY={"3"}>
+            {Component}
+        </Flex>
     }) : null;
 }
