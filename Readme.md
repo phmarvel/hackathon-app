@@ -1,9 +1,5 @@
-# NativeBase TypeScript Expo Template
+# hackathon-app
 
-The official NativeBase TypeScript template for [Expo](https://docs.expo.io/)
+## Expo Project page
 
-## Usage
-
-```sh
-expo init my-app --template @native-base/expo-template-typescript
-```
+[Project page](https://expo.dev/@phmarvel/hackathon-app)
