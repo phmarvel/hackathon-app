@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   Link,
@@ -12,58 +12,62 @@ import {
   VStack,
   Box,
 } from "native-base";
-import NativeBaseIcon from "./components/NativeBaseIcon";
+import {
+  // en,
+  // nl,
+  // pl,
+  enGB,
+  registerTranslation,
+  // @ts-ignore TODO: try to fix expo to work with local library
+} from 'react-native-paper-dates'
+import { Provider as PaperProvider } from 'react-native-paper';
+import { Provider } from "react-redux";
+import { configureStore } from "./stores/store";
+import { services } from "./services/index";
+import 'intl';
+import 'intl/locale-data/jsonp/en'; // or any other locale you need
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { RootNavigator } from './navigation/RootNavigator';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Define the config
 const config = {
   useSystemColorMode: false,
   initialColorMode: "dark",
 };
+registerTranslation('en-GB', enGB)
 
 // extend the theme
 export const theme = extendTheme({ config });
 type MyThemeType = typeof theme;
 declare module "native-base" {
-  interface ICustomTheme extends MyThemeType {}
+  interface ICustomTheme extends MyThemeType { }
 }
 export default function App() {
+
+  const [loadding, setLoadding] = useState(true)
+  const [preloadedState, setPreloadedState] = useState(true)
+
+  useEffect(() => {
+    (async () => {
+      let state = await AsyncStorage.getItem('reduxState')
+      if (state) {
+        setPreloadedState(JSON.parse(state))
+      }
+      setLoadding(false)
+
+    })()
+  }, [])
+
   return (
     <NativeBaseProvider>
-      <Center
-        _dark={{ bg: "blueGray.900" }}
-        _light={{ bg: "blueGray.50" }}
-        px={4}
-        flex={1}
-      >
-        <VStack space={5} alignItems="center">
-          <NativeBaseIcon />
-          <Heading size="lg">Welcome to NativeBase</Heading>
-          <HStack space={2} alignItems="center">
-            <Text>Edit</Text>
-            <Box
-              _web={{
-                _text: {
-                  fontFamily: "monospace",
-                  fontSize: "sm",
-                },
-              }}
-              px={2}
-              py={1}
-              _dark={{ bg: "blueGray.800" }}
-              _light={{ bg: "blueGray.200" }}
-            >
-              App.js
-            </Box>
-            <Text>and save to reload.</Text>
-          </HStack>
-          <Link href="https://docs.nativebase.io" isExternal>
-            <Text color="primary.500" underline fontSize={"xl"}>
-              Learn NativeBase
-            </Text>
-          </Link>
-          <ToggleDarkMode />
-        </VStack>
-      </Center>
+      <PaperProvider>
+        {!loadding && <Provider store={configureStore(services, preloadedState)}>
+          <SafeAreaProvider>
+            <RootNavigator />
+          </SafeAreaProvider>
+        </Provider>}
+      </PaperProvider>
     </NativeBaseProvider>
   );
 }
