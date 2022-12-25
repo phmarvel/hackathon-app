@@ -49,7 +49,7 @@ export default ({ item, category,
 
 
     return (
-        <Box bg="blueGray.50" p="3" rounded="8" m={'1'} flex={1 / 2}>
+        <Box bg="blueGray.50" p="3" rounded="8" m={'1'} minW={280}>
 
             <Text fontWeight="medium" fontSize="16">
                 {renderTitleFieldValue()}

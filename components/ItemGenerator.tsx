@@ -1,7 +1,7 @@
 
 import React from 'react';
 import {
-    FlatList
+    FlatList, View
 
 } from 'native-base';
 import { Box } from 'native-base';
@@ -28,29 +28,22 @@ export default ({ values, category,
 
     }
 
-    return (
-        <FlatList data={category.fields ?? []} renderItem={({
-            item
-        }: { item: any }) => {
+    return category?.fields?.length > 0 ? category.fields.map((item: any) => {
 
-            let value = values[item.id];
-            switch (item.type) {
-                case 'TEXT':
-                    return <Text label={item.name} value={value} onChangeText={(text) => onChangeValue(item.id, text)} />;
-                case 'NUMBER':
-                    return <Number label={item.name} value={value} onChangeText={(text) => onChangeValue(item.id, text)} />;
-                case 'DATE':
-                    return <Date label={item.name} value={value} onChange={(date: any) => onChangeValue(item.id, date)} />;
-                case 'CHECKBOX':
+        let value = values[item.id];
+        switch (item.type) {
+            case 'TEXT':
+                return <Text label={item.name} value={value} onChangeText={(text) => onChangeValue(item.id, text)} />;
+            case 'NUMBER':
+                return <Number label={item.name} value={value} onChangeText={(text) => onChangeValue(item.id, text)} />;
+            case 'DATE':
+                return <Date label={item.name} value={value} onChange={(date: any) => onChangeValue(item.id, date)} />;
+            case 'CHECKBOX':
 
-                    return <Checkbox label={item.name} value={value} onChange={(val) => onChangeValue(item.id, val)} />;
+                return <Checkbox label={item.name} value={value} onChange={(val) => onChangeValue(item.id, val)} />;
 
-                default:
-                    return null;
-            }
-        }}
-            keyExtractor={(item, index) => 'ItemGenerator' + index.toString()}
-            listKey={'ItemGenerator'}
-        />
-    );
+            default:
+                return null;
+        }
+    }) : null;
 }

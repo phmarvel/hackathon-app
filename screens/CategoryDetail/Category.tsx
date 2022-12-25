@@ -12,18 +12,17 @@ import {
     Box,
 
 } from 'native-base';
-import { Dimensions } from 'react-native';
 import { getCategories } from '../../selectors/categories';
 import { useDispatch, useSelector } from 'react-redux';
 import { getItems } from '../../selectors/items';
 import { addItem, deleteItem } from '../../actions/items';
 import CategoryItem from './item';
+import { Flex } from 'native-base';
 
 function Category({ categoryId }: { categoryId: any }) {
     const dispatch = useDispatch()
     const categories = useSelector(getCategories);
     const items = useSelector(getItems);
-
     const category = categories.find((s: any) => s.id == categoryId)
     const categoryItems = items.filter((s: any) => s.categoryId == categoryId)
 
@@ -35,10 +34,10 @@ function Category({ categoryId }: { categoryId: any }) {
     }
 
     return (
-        <Box flex={1} >
+        <Box >
 
 
-            <HStack m={2} justifyContent="space-between" alignItems={"center"} >
+            <HStack m={2} justifyContent="space-between" >
                 <Text fontWeight="medium" fontSize="20" flex={3}>
                     {category?.name}
                 </Text>
@@ -46,12 +45,14 @@ function Category({ categoryId }: { categoryId: any }) {
                     ADD NEW ITEM
                 </Button>
             </HStack>
-            {(categoryItems ?? []).map((item: any) => <CategoryItem
-                key={'item' + item.id}
-                item={item}
-                category={category}
-                OnDeleteItem={OnDeleteItem}
-            />)}
+            <Flex direction='row' flexWrap={'wrap'} flex={1} justifyContent="space-around">
+                {(categoryItems ?? []).map((item: any) => <CategoryItem
+                    key={'item' + item.id}
+                    item={item}
+                    category={category}
+                    OnDeleteItem={OnDeleteItem}
+                />)}
+            </Flex>
         </Box>
 
     );
